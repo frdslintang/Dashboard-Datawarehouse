@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<Schema name="newadventurework">
+<!--
+  == This software is subject to the terms of the Eclipse Public License v1.0
+  == Agreement, available at the following URL:
+  == http://www.eclipse.org/legal/epl-v10.html.
+  == You must accept the terms of that agreement to use this software.
+  ==
+  == Copyright (C) 2000-2005 Julian Hyde
+  == Copyright (C) 2005-2011 Pentaho and others
+  == All Rights Reserved.
+  -->
+
+<!-- Shared dimensions -->
+
+  
+
+<!-- Sales -->
+<Cube name="Pembelian" defaultMeasure="SubTotal">
+  <!-- Use annotations to provide translations of this cube's caption and
+       description into German and French. Use of annotations in this manner is
+       experimental and unsupported; just for testing right now. -->
+  
+  <Table name="fakta_pembelian"/>
+
+  <Dimension name="Time" foreignKey="time_id">
+    <Hierarchy hasAll="true" allMemberName="All Times" primaryKey="time_id">
+    <Table name="time" />
+    <Level name="Year" column="tahun" type="Numeric" uniqueMembers="true"
+        levelType="TimeYears"/>
+    <Level name="Month" column="bulan" uniqueMembers="false" type="Numeric"
+        levelType="TimeMonths"/>
+    <Level name="Date" column="tanggal" uniqueMembers="false" type="Numeric"
+        levelType="TimeDays"/>
+    </Hierarchy>
+  </Dimension>
+
+  <Dimension name="Product" foreignKey = "ProductID">
+    <Hierarchy hasAll="true" allMemberName="All Product" primaryKey ="ProductID">
+      <Table name="product" />
+      <Level name="Name" column="Name"/>
+	    <Level name="ProductNumber" column="ProductNumber"/>
+	    <Level name="MinOrderQty" column="MinOrderQty"/>
+      <Level name="MaxOrderQty" column="MaxOrderQty"/>
+      <Level name="OnOrderQty" column="OnOrderQty"/>
+    </Hierarchy>
+  </Dimension>
+  
+  <Dimension name="Vendor" foreignKey="VendorID">
+    <Hierarchy  hasAll  ="true" allMemberName="All Vendor" primaryKey  = "VendorID">
+      <Table name="vendor"/>
+      <Level name="Name" column="Name"/>
+	</Hierarchy>
+  </Dimension>
+  
+  <Dimension name="ShipMethod" foreignKey="ShipMethodID">
+    <Hierarchy  hasAll  ="true" allMemberName="All Ship Method" primaryKey  = "ShipMethodID">
+      <Table name="shipmethod"/>
+      <Level name="Name" column="Name"/>
+    </Hierarchy>
+  </Dimension>
+
+    <Dimension name="productinventory" foreignKey="ProductID">
+    <Hierarchy  hasAll  ="true" allMemberName="All productinventory" primaryKey  = "ProductID">
+      <Table name="productinventory"/>
+      <Level name="LocationID" column="LocationID"/>
+		  <Level name="Location Name" column="Location Name"/>
+    </Hierarchy>
+  </Dimension>
+
+    <Dimension name="purchasing" foreignKey="PurchaseOrderID">
+    <Hierarchy  hasAll  ="true" allMemberName="All purchasing" primaryKey  = "PurchaseOrderID">
+      <Table name="purchasing"/>
+      <Level name="PurchaseOrderID" column="PurchaseOrderID"/>
+    </Hierarchy>
+  </Dimension>
+  
+
+  <Measure name="SubTotal" column="SubTotal" aggregator="sum"
+      formatString="Standard"/>
+  <Measure name="TaxAmt" column="TaxAmt" aggregator="sum"
+      formatString="Standard"/>
+  <Measure name="Freight" column="Freight" aggregator="sum"
+      formatString="Standard"/>
+  
+ 
+  
+</Cube>
+
+
+
+</Schema>
